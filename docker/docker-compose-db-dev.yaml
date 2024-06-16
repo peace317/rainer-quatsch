@@ -1,0 +1,15 @@
+version: '3.1'
+
+name: mongodb-dev
+
+services:
+  mongodb:
+      build:
+        dockerfile: mongodb/Dockerfile-db-dev
+      environment:
+        MONGO_INITDB_ROOT_USERNAME: root
+        MONGO_INITDB_ROOT_PASSWORD: prisma
+        MONGO_REPLICA_HOST: localhost
+        MONGO_REPLICA_PORT: 27017
+      ports:
+        - '27017:27017'

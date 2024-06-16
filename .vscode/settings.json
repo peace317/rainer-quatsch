@@ -1,0 +1,7 @@
+{
+    "editor.links": true,
+    "files.associations": {
+        ".env.*": "properties",
+        "Dockerfile*": "dockerfile"
+      }
+}

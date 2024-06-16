@@ -1,0 +1,31 @@
+FROM node:18-alpine AS base
+
+# Installing dependencies
+FROM base AS deps
+WORKDIR /app
+
+COPY ./prisma/package.json ./prisma/package-lock.json ./
+
+RUN npm ci
+
+FROM base AS runner
+WORKDIR /app
+
+COPY --from=deps /app/node_modules ./node_modules
+COPY ../prisma/ /app
+COPY ./.env* /app
+
+ENV NODE_ENV production
+
+ENV NODE_TLS_REJECT_UNAUTHORIZED 0
+#ENV http_proxy 'http://proxy-hh.innovas.de:3128'
+#ENV https_proxy 'http://proxy-hh.innovas.de:3128'
+
+RUN npm config set registry "http://registry.npmjs.org/"
+RUN npm config set strict-ssl false
+#RUN npm config set proxy http://proxy-hh.innovas.de:3128
+
+RUN apk --no-check-certificate add mongodb-tools
+#RUN apk add mongodb-tools
+
+CMD node /app/importRuleTables.js

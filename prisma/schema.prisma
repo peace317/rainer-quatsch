@@ -1,0 +1,132 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl"]
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  ADMIN
+  USER
+  TECHNICAL_USER
+  GUEST
+}
+
+enum UserStatus {
+  OFFLINE
+  ONLINE
+  IN_CALL
+  DO_NOT_DISTURB
+  ABSENT
+}
+
+enum Competence {
+  SEE_ADMIN_DASHBOARD
+  SEE_CALENDAR
+  SEE_CALENDAR_OTHERS
+  SEE_DOCUMENTS
+  UPLOAD_DOCUMENTS
+  CREATE_NEW_CONVERSATION
+}
+
+model User {
+  id             String     @id @default(auto()) @map("_id") @db.ObjectId
+  username       String     @unique
+  displayName    String
+  email          String
+  hashedPassword String
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+  userRole       UserRole   @default(USER)
+  status         UserStatus @default(OFFLINE)
+  avatar         String?    @db.ObjectId
+
+  conversationIds String[]       @db.ObjectId
+  conversations   Conversation[] @relation(fields: [conversationIds], references: [id])
+
+  seenMessageIds String[]  @db.ObjectId
+  seenMessages   Message[] @relation("Seen", fields: [seenMessageIds], references: [id])
+
+  scheduleIds String[]   @db.ObjectId
+  schedules   Schedule[] @relation(fields: [scheduleIds], references: [id])
+
+  archives Archive[]
+
+  messages Message[]
+}
+
+model Conversation {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt     DateTime @default(now())
+  lastMessageAt DateTime @default(now())
+  name          String?
+
+  messagesIds String[]  @db.ObjectId
+  messages    Message[]
+
+  userIds String[] @db.ObjectId
+  users   User[]   @relation(fields: [userIds], references: [id])
+
+  archives Archive[]
+}
+
+model Message {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  body      String?
+  createdAt DateTime @default(now())
+
+  seenIds String[] @db.ObjectId
+  seen    User[]   @relation("Seen", fields: [seenIds], references: [id])
+
+  conversationId String       @db.ObjectId
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+
+  senderId String @db.ObjectId
+  sender   User   @relation(fields: [senderId], references: [id], onDelete: Cascade)
+
+  archives Archive[]
+}
+
+model Schedule {
+  id                  String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+  creatorId           String   @db.ObjectId
+  start               DateTime
+  end                 DateTime
+  title               String
+  scheduleInformation String
+
+  participantIds String[] @db.ObjectId
+  participants   User[]   @relation(fields: [participantIds], references: [id])
+}
+
+model Archive {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  uploadedAt DateTime @default(now())
+  filename   String
+  mimetype   String
+
+  uploaderId String @db.ObjectId
+  uploader   User   @relation(fields: [uploaderId], references: [id], onDelete: Cascade)
+
+  messageId String?  @db.ObjectId
+  message   Message? @relation(fields: [messageId], references: [id], onDelete: Cascade)
+
+  conversationId String?       @db.ObjectId
+  conversation   Conversation? @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+}
+
+model PermissionMatrix {
+  id               String     @id @default(auto()) @map("_id") @db.ObjectId
+  permissionRole   UserRole
+  competence       Competence
+  dynamicAttribute String?
+  authFlag         Boolean
+}

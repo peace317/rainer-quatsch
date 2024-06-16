@@ -1,0 +1,36 @@
+[
+    {
+        "_id": {
+            "$oid": "661092295fb86a72117c878e"
+        },
+        "username": "piepej",
+        "displayName": "Janik",
+        "email": "janik.piepenhagen@web.de",
+        "hashedPassword": "$2a$12$.QcOKwrwj2dZ.Eskk4PmtervDIqrzRSdYrizz.NNqckiSqFUgVvu2",
+        "userRole": "ADMIN",
+        "status": "OFFLINE",
+        "createdAt": {
+            "$date": "2024-04-06T00:07:05.703Z"
+        },
+        "updatedAt": {
+            "$date": "2024-04-17T21:21:39.606Z"
+        }
+    },
+    {
+        "_id": {
+            "$oid": "661092615fb86a72117c878f"
+        },
+        "username": "tinf103697",
+        "displayName": "Adlerson",
+        "email": "tinf103697@stud.fh-wedel.de",
+        "hashedPassword": "$2a$12$Q8rW7l4YI16XoKc4wfiK1.vpegh59JjQdH.bl8mwkkrquqzDg/YYa",
+        "userRole": "USER",
+        "status": "OFFLINE",
+        "createdAt": {
+            "$date": "2024-04-06T00:08:01.247Z"
+        },
+        "updatedAt": {
+            "$date": "2024-04-14T16:22:37.142Z"
+        }
+    }
+]

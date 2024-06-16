@@ -1,0 +1,95 @@
+version: "3.8"
+
+name: rainer-quatsch
+
+services:
+  app:
+    container_name: app
+    build:
+      context: ../
+      dockerfile: docker/app/Dockerfile
+    image: rainer-quatsch
+    user: root
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: "mongodb://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@mongod-primary:27017/rainer-quatsch?replicaSet=dbrs&authSource=admin"
+      ENV_HOST: "${HOST}"
+    depends_on:
+      - mongod-primary
+
+  mongod-primary:
+    container_name: mongod-primary
+    build:
+      context: ./
+      dockerfile: /mongodb/Dockerfile
+    image: rainer-quatsch-mongod
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+    depends_on:
+      - mongod-secondary
+      - mongod-arbiter
+    ports:
+      - ${MONGODB_PORT}:27017
+    command: mongod --bind_ip_all --replSet dbrs --keyFile /data/replica.key
+
+  mongod-secondary:
+    container_name: mongod-secondary
+    build:
+      context: ./
+      dockerfile: /mongodb/Dockerfile
+    image: rainer-quatsch-mongod
+    expose:
+      - 27017
+    command: "mongod --bind_ip_all --replSet dbrs --keyFile /data/replica.key"
+
+  # mongodb replicaset arbiter
+  mongod-arbiter:
+    container_name: mongod-arbiter
+    build:
+      context: ./
+      dockerfile: /mongodb/Dockerfile
+    image: rainer-quatsch-mongod
+    expose:
+      - 27017
+    command: "mongod --bind_ip_all --replSet dbrs --keyFile /data/replica.key"
+
+  mongo-setup:
+    build:
+      context: ./
+      dockerfile: /mongodb/Dockerfile
+    image: rainer-quatsch-mongod
+    container_name: mongo-setup
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+    depends_on:
+      - mongod-primary
+      - mongod-secondary
+      - mongod-arbiter
+    restart: on-failure
+    entrypoint: [ "/bin/bash", "/scripts/mongodb_rs_init.sh" ]
+
+  cargo-boot:
+    build:
+      context: ../
+      dockerfile: /docker/mongodb/Dockerfile-cargo-boot
+    container_name: cargo-boot
+    environment:
+      DATABASE_URL: "mongodb://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@mongod-primary:27017/rainer-quatsch?replicaSet=dbrs&authSource=admin"
+    depends_on:
+      mongo-setup:
+        condition: service_completed_successfully
+
+  mongo-express:
+    container_name: mongo-express
+    image: mongo-express
+    ports:
+      - ${MONGOEXP_PORT}:8081
+    environment:
+      ME_CONFIG_BASICAUTH_USERNAME: ${MONGOEXP_USERNAME}
+      ME_CONFIG_BASICAUTH_PASSWORD: ${MONGOEXP_PASSWORD}
+      ME_CONFIG_MONGODB_URL: "mongodb://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@mongod-primary:27017/?replicaSet=dbrs"
+    depends_on:
+      - "mongod-primary"

@@ -1,0 +1,17 @@
+[
+    {
+        "permissionRole": "ADMIN",
+        "competence": "SEE_ADMIN_DASHBOARD",
+        "authFlag": true
+    },
+    {
+        "permissionRole": "ADMIN",
+        "competence": "SEE_CALENDAR",
+        "authFlag": true
+    },
+    {
+        "permissionRole": "ADMIN",
+        "competence": "SEE_CALENDAR_OTHERS",
+        "authFlag": true
+    }
+]

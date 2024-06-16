@@ -1,0 +1,26 @@
+{
+    "extends": "../../tsconfig.json",
+    "exclude": ["./node_modules", "./dist"],
+    "include": ["./"],
+    "compilerOptions": {
+        "lib": ["dom", "esnext"],
+        "target": "ES6",
+        "module": "esnext",
+        "importHelpers": true,
+        // output .d.ts declaration files for consumers
+        "declaration": true,
+        "declarationMap": true,
+        // interop between ESM and CJS modules. Recommended by TS
+        "esModuleInterop": true,
+        // significant perf increase by skipping checking .d.ts files, particularly those in node_modules. Recommended by TS
+        "skipLibCheck": true,
+        // error out if import and file system have a casing mismatch. Recommended by TS
+        "forceConsistentCasingInFileNames": true,
+        "incremental": false,
+        "sourceMap": true,
+        "noEmit": false,
+        "rootDir": "../../",
+        "declarationDir": "./dist",
+        "outDir": "./dist",
+    }
+}

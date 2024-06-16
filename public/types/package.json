@@ -1,0 +1,23 @@
+{
+  "name": "@app/types",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsup --onSuccess \"tsc --declaration --emitDeclarationOnly\""
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/public/types/index.d.ts",
+      "import": "./dist/index.cjs",
+      "require": "./dist/index.js"
+    }
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "devDependencies": {
+    "tsup": "^8.0.2",
+    "typescript": "^5.4.5"
+  }
+}

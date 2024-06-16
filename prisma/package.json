@@ -1,0 +1,10 @@
+{
+  "name": "import-processor",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5"
+  }
+}

@@ -1,0 +1,221 @@
+* {
+    box-sizing: border-box;
+}
+
+html {
+    height: 100%;
+}
+
+body {
+    font-family: var(--font-family);
+    color: var(--text-color);
+    background-color: var(--surface-ground);
+    margin: 0;
+    padding: 0;
+    min-height: 100%;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+    text-decoration: none;
+    color: var(--primary-color);
+}
+
+.layout-wrapper {
+    min-height: 100vh;
+}
+
+.pi {
+    font-size: 1.35rem !important;
+}
+
+.pi-big {
+    font-size: 1.5rem !important;
+}
+
+#videos {
+    display: grid;
+    grid-template-columns: 1fr;
+    height: 60vh;
+    overflow: hidden;
+}
+
+#videos2 {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.video-player {
+    background-color: black;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+#user-2 {
+    //display: none;
+}
+
+.smallFrame {
+    position: absolute;
+    bottom: 0;
+    margin: 1rem;
+    width: 300px;
+    height: 170px;
+    border-radius: 5px;
+    border: 2px solid #b366f9;
+    -webkit-box-shadow: 3px 3px 15px -1px rgba(0, 0, 0, 0.77);
+    box-shadow: 3px 3px 15px -1px rgba(0, 0, 0, 0.77);
+}
+
+
+@media screen and (max-width:600px) {
+    .smallFrame {
+        height: 80px;
+        width: 120px;
+    }
+}
+
+.p-divider-solid.p-divider-horizontal:before {
+    border-top-style: solid !important;
+  }
+  .p-divider-dashed.p-divider-horizontal:before {
+    border-top-style: dashed !important;
+  }
+  .p-divider-solid.p-divider-vertical:before {
+    border-left-style: solid !important;
+  }
+
+  .center-screen {
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    min-height: 100%;
+    min-width: 100%;
+  }
+
+  .p-avatar .p-badge {
+    margin-left: 0.7rem;
+    min-width: .6rem;
+    height: .6rem;
+    line-height: 1rem;
+}
+
+.conversation-item {
+    background: var(--surface-overlay) !important;
+}
+
+.conversation-item:hover {
+    background: var(--surface-hover) !important;
+}
+
+.conversation-item-selected {
+    background: var(--surface-200) !important;
+}
+
+.conversation-item-header {
+    color: var(--text-color);
+}
+
+.conversation-item-last-msg-date {
+    color: var(--text-color);
+}
+
+.conversation-item-message {
+    color: var(--text-color);
+    font-weight: bold;
+}
+
+.conversation-item-message-seen {
+    color: var(--text-color);
+}
+
+.message-send {
+    color: var(--primary-color-text);
+    background-color: var(--primary-color);
+}
+
+.message-received {
+    color: var(--primary-color-text);
+    background-color: var(--primary-color);
+}
+
+.message-seen-by {
+    color: var(--text-color-secondary);
+}
+
+.message-text p {
+    margin: 0;
+}
+
+.message-text img {
+    max-height: 300px;
+    max-width: 300px;
+}
+
+.messageBody {
+    margin: 0rem 2rem 0rem 2rem;
+}
+
+.messageBody .p-scrollpanel-wrapper {
+    overflow-x: hidden;
+    height: calc(100vh - 340px);
+    width: 100%;
+    /* max-width: 800px; */
+}
+
+.messageBody .p-scrollpanel-content {
+    overflow-x: hidden;
+    height: 100%;
+}
+
+.fileupload {
+    height: 24px;
+}
+
+.fileupload .p-fileupload-choose {
+    padding: 0.38rem;
+    height: 26px;
+}
+
+.fileupload .p-button-icon {
+    font-size: 1.2rem !important;
+}
+
+.fileupload .p-fileupload-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%; 
+    height: 100%; 
+    background-color: transparent !important;
+    z-index: 999;
+    pointer-events: none;
+    margin: 1px;
+    border: none !important;
+}
+
+.fileupload[drop-active=true] .p-fileupload-content {
+    pointer-events: all;
+}
+
+.nopointer[drop-active=true] {
+    pointer-events: none;
+}
+
+.grid {
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: 0rem;
+    margin-left: 0rem;
+    margin-top: 0rem;
+}
+
+
+.ql-container > .ql-editor.ql-blank::before{
+    color: var(--surface-600);
+}
