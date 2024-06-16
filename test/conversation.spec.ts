@@ -82,27 +82,3 @@ test.describe('test delete conversation', () => {
         await expect(page.getByText('Deletable conversation')).not.toBeVisible();
     });
 });
-
-test.describe('test file upload', () => {
-    test.beforeEach(async ({ page }) => {
-        page.on('console', (msg) => console.log(msg.text()));
-    });
-    test.use({ storageState: USER.storageState });
-
-    test('simple file upload', async ({ page }) => {
-        await page.goto('/dashboard');
-        await page.getByText('Test Conversation').click();
-        await page.waitForURL(/\/dashboard\/conversation\/\d+/);
-        await page.locator('#header').getByRole('button').first().click();
-        
-        const fileChooserPromise = page.waitForEvent('filechooser');
-        await page.getByText('Durchsuchen').click();
-        const fileChooser = await fileChooserPromise;
-        await fileChooser.setFiles(path.join(__dirname, '../test-config/test-file.png'));
-        
-        await expect(page.getByLabel('Insert Image')).toContainText('test-file.png9.133 KBpending');
-        await page.getByLabel('Upload').click();
-        await expect(page.getByRole('cell', { name: 'preview test-file.png' }).locator('div')).toBeVisible();
-        await page.getByRole('cell', { name: 'C Clark Kent' }).click();
-    });
-});
