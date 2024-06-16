@@ -145,7 +145,7 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 
 MIT © [RainerQuatsch](https://github.com/peace317/rainer-quatsch)
 
-[github-actions-status]: https://github.com/peace317/rainer-quatsch/workflows/Test/badge.svg
+[github-actions-status]: https://github.com/peace317/rainer-quatsch/workflows/Build%20App/badge.svg
 [github-actions-url]: https://github.com/peace317/rainer-quatsch/actions
 [github-tag-image]: https://img.shields.io/github/v/tag/peace317/rainer-quatsch.svg?label=version
 [github-tag-url]: https://github.com/peace317/rainer-quatsch/releases/latest
